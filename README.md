@@ -52,3 +52,9 @@ Diğer 2 modelimiz ise overfitting yaptı. Ağaç modelleri eğitim verilerini e
 ```bash
 pip install pandas numpy matplotlib seaborn scikit-learn xgboost
 ```
+
+## Kaynaklar
+
+- [Sentiment Analysis & ML Model Building - Insight Group](https://insight-group.github.io/MFIN7036/sentiment-analysis-machine-learning-build-models.html)
+- [Understanding Logistic Regression in Python - DataCamp](https://www.datacamp.com/tutorial/understanding-logistic-regression-python)
+- [XGBoost - GeeksforGeeks](https://www.geeksforgeeks.org/machine-learning/xgboost/)
