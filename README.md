@@ -10,6 +10,11 @@ tespiti üzerine olması.
 10.000 satır sensör verisinden oluşuyor. Amaç makinenin arızalanıp arızalanmayacağını 
 tahmin etmek.
 
+## EDA
+
+Veriyi tanımak için korelasyon matrisi oluşturdum. Target sütunuyla en yüksek 
+ilişkisi olan özellikler Torque (0.19) ve Tool Wear (0.11) oldu.Ayrıca sns.countplot kullanarak bir class imbalance fark 
+ettim.
 ## Veri Hazırlığı
 
 İlk başta tüm sayısal özellikleri korudum ama işimize yaramayan UDI ve Product ID 
