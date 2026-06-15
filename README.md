@@ -14,23 +14,22 @@ tahmin etmek.
 
 İlk başta tüm sayısal özellikleri korudum ama işimize yaramayan UDI ve Product ID 
 gibi sütunları sildim, hiçbir katkıları yoktu. Tek katkısı olan string tipindeki 
-sütun Type'tı — kullanılan cihazın tipi değiştikçe veriler de değişebileceğinden 
-bu özelliği sayıya çevirdim (L→0, M→1, H→2). Sonra veriyi X ve y olarak ikiye 
-ayırdım, y bizim tahmin etmek istediğimiz Target, X ise geri kalan tüm özellikler. 
+sütun Type'tı , kullanılan cihazın tipi değiştikçe veriler de değişebileceğinden 
+bu özelliği sayıya çevirdim (L→0, M→1, H→2). Sonra veriyi X ve Y olarak ikiye 
+ayırdım, Y bizim tahmin etmek istediğimiz Target, X ise geri kalan tüm özellikler. 
 Son olarak %80 train %20 test olarak böldük.
+
+Veri setinde ciddi bir sınıf dengesizliği vardı ( 9661 normal, sadece 339 arızalı makine (%96 vs %3)). Bu yüzden modele sadece accuracy'e bakmak yanıltıcı, model her veriye normal diyerek %96 doğruluk alabilirdi. Bunu çözmek için Logistic Regression ve Random Forest'ta class_weight='balanced', XGBoost'ta ise scale_pos_weight=9661/339 parametresi kullandım. Bu sayede model az olan arızalı örneklere daha fazla üstüne düştü.
 
 ## Modeller
 
 Bu 3 modeli seçtim çünkü basitten karmaşığa doğru ilerlemeyi istedim.
 
-**Logistic Regression** — temel değerleri görmek için kullandım, underfitting oldu, 
-yeterli değildi.
+**Logistic Regression** — > Baz skor almak için kullandım. Train ve Test F1 skoru 0.22-0.23 bandında kaldı, underfitting yapıyordu, model veriyi yeterince öğrenemedi
 
-**Random Forest** — çoklu ağaç yapısı kullanarak çok daha doğru sonuç verdi ve 
-tutarlıydı.
+**Random Forest** — > çoklu ağaç yapısı kullanarak ,Test F1 skoru 0.65'e çıktı, Logistic Regression'a göre çok daha iyi. Ama Train F1 0.99 oldu, overfitting başladı
 
-**XGBoost** — son modelim. Random Forest'tan farkı ağaç yapılarını sıralı 
-çalıştırarak sürekli kendini düzeltmesi. Endüstride çok yaygın kullanılıyor.
+**XGBoost**  — > son modelim.En dengeli sonucu verdi, Random Foresttan farkı sıralı ağaç yapısı kullnarak hatalarını öğrenebiliyor. Test F1 0.66 ile Random Forest'a yakın ama Recall 0.69'a çıktı  arızaları yakalamak bizim için kritik olduğundan bu fark önemli
 
 ## Sonuçlar
 
@@ -41,7 +40,7 @@ tutarlıydı.
 | XGBoost | 0.99 | 0.66 |
 
 Sonuçlara bakınca Logistic Regression underfitting kalıyor, lineer bir model olduğu için scaling gerekiyor. 
-Diğer 2 modelimiz ise overfitting yapıyor ağaç modelleri eğitim verilerini ezberledi bu yüzden test error yüksek çıktı. Bir sonraki adımda hyperparameter tuning ile çözülebilir
+Diğer 2 modelimiz ise overfitting yaptı. Ağaç modelleri eğitim verilerini ezberlediği için test error yüksek çıktı
 
 ## Kurulum
 
